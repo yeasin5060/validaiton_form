@@ -1,0 +1,86 @@
+#log_in{
+    background: #fff;
+}
+.log_in_page{
+    width: 100%;
+    height: 100vh;
+    background:aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.log_in_wrapper{
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    row-gap: 20px;
+    width: 400px;
+}
+.log_in_input_box{
+    width: 100%;
+}
+.log_in_input_box div{
+    width: 100%;
+}
+.log_in_head{
+    font-size: 52px;
+    font-weight: 700;
+    color: #11175D;
+    line-height: 150%;
+    margin-bottom: 13px;
+}
+.log_in_pera{
+    font-size: 20px;
+    font-weight: 400;
+    color: #000;
+    line-height: 150%;
+    margin-bottom: 40px;
+    opacity: 50%;
+}
+.log_in_page_button_box{
+    text-align: center;
+    width: 400px;
+    margin: 40px 0;
+}
+.log_in_page_btn{
+    width: 100%;
+    border-radius: 20px;
+    padding: 20px 0;
+    background: #5F35F5;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+}
+.log_in_page_to_sign_link_box{
+    text-align: center;
+    width: 400px;
+}
+.log_in_page_already_account{
+    font-size: 14px;
+    font-weight: 400;
+    color: #03014C;
+}
+.log_in_page_to_sign_link{
+    font-size: 14px;
+    font-weight: 400;
+    color: #EA6C00;
+    cursor: pointer;
+}
+.log_in_image_box{
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+.log_in_image_box img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.login_error{
+    font-size: 14px;
+    font-weight: 600;
+    color: red;
+    margin-top: 8px;
+}
