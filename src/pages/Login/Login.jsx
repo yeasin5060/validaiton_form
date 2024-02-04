@@ -9,7 +9,7 @@ import Subhead from '../../Utilites/Subhead/Subhead';
 import Pera from '../../Utilites/Pera/Pera';
 import { Link } from 'react-router-dom';
 import login from '../../images/login.png'
-import { getAuth, createUserWithEmailAndPassword , sendEmailVerification ,updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword ,sendEmailVerification ,updateProfile } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 
@@ -48,7 +48,7 @@ const Login = () => {
 
   let emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-  let signup = ()=>{
+  let signhandle = ()=>{
     if(!userData.fullname){
         setError({fullname:"Full Name is Require"});
     }
@@ -64,29 +64,32 @@ const Login = () => {
       setError({email:" "});
       setError({password:"Password is Require"});
     }
-    else if (!userData.conpassword){
-      setError({password:" "});
-      setError({conpassword:"Confirm-password is Require"});
+    else if(!userData.conpassword){
+      setError({password:""})
+      setError({conpassword:"Confirm-Password is Require"})
     }
-    else if (userData.conpassword == userData.password){
-      setError({conpassword:" "});
-        createUserWithEmailAndPassword(auth, userData.email , userData.password , userData.conpassword)
-        .then((userCredential) => {
+    else if(userData.conpassword != userData.password){
+      setError({conpassword:"Confirm-Password Don't Match"})
+    }
+    else{
+      createUserWithEmailAndPassword(auth, userData.email, userData.password)
+        .then((userCredential)=> {
           sendEmailVerification(auth.currentUser)
-            .then(() => {
-              updateProfile(auth.currentUser, {
-                displayName: userData.fullname,
-                photoURL: "https://example.com/jane-q-user/profile.jpg"
-              }).then(() => {
-                set(ref(db, 'users/' + userCredential.user.uid), {
-                  username:userCredential.user.displayName,
-                  email: userCredential.user.email,
-                  profile_picture : userCredential.user.photoURL
-                });
-              }).then (()=>{
-                navigate ("/sign")
-              })
-            });
+          .then(() => {
+            updateProfile(auth.currentUser, {
+              displayName: userData.fullname,
+              photoURL: "https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg="
+            }).then(() => {
+              set(ref(db, 'logindata/' + userCredential.user.uid), {
+                username:userCredential.user.displayName,
+                email: userCredential.user.email,
+                profile_picture : userCredential.user.photoURL
+              });
+            }).then(()=>{
+              navigate ("/sign")
+              console.log(userCredential)
+            })
+          });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -95,12 +98,8 @@ const Login = () => {
         }else{
           setError({email : ""})
         }
-          // ..
         });
-    }else{
-      setError({conpassword:"Confirm Password Don't Match"});
     }
-    console.log(userData)
   }
   return (
     <section id='log_in'>
@@ -125,12 +124,12 @@ const Login = () => {
                     {error.password && <p className='login_error'>{error.password}</p>}
                   </div>
                   <div className='log_in_input_box'>
-                    <TextField id="outlined-basic" type="password" name = "conpassword" label="Confirm-Password" onChange={handleform} variant ="outlined" />
-                    {error.conpassword && <p className='login_error'>{error.conpassword}</p>}
-                  </div>
+                      <TextField id="outlined-basic" type='password' name='conpassword' label="Confirm-Password" onChange={handleform} variant="outlined" />
+                      {error.conpassword && <p className='sign_error'>{error.conpassword}</p>}
+                    </div>
                 </div>
                 <div className='log_in_page_button_box'>
-                  <button onClick={signup} className='log_in_page_btn'>Sign up</button>
+                  <button onClick={signhandle} className='log_in_page_btn'>Sign up</button>
                 </div>
                 <div className='log_in_page_to_sign_link_box'>
                   <span className='log_in_page_already_account'>

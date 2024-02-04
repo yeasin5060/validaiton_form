@@ -10,7 +10,7 @@ import Pera from '../../Utilites/Pera/Pera';
 import { Link } from 'react-router-dom';
 import sign from "../../images/sign.png"
 import google from '../../images/google.svg'
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword , signOut} from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
 
@@ -26,14 +26,14 @@ const Signin = () => {
   const auth = getAuth();
   const navigate = useNavigate();
 
-  let [userData , setUserData] = useState({
+  let [loginData , setLoginData] = useState({
     email : "",
     password : ""
   })
 
   let handleform = (e)=>{
     let {name , value} = e.target
-    setUserData({...userData,[name]:value})
+    setLoginData({...loginData,[name]:value})
   }
 
   let [error , setError] = useState({
@@ -42,19 +42,26 @@ const Signin = () => {
   })
   let emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   let login = ()=>{
-    if(!userData.email){
+    if(!loginData.email){
       setError({email:"Email is Require"});
     }
-    else if (!userData.email.match(emailregex)){
+    else if (!loginData.email.match(emailregex)){
       setError({email:" "});
       setError({email:"Inter valid Email"});
-    }else if(!userData.password){
+    }else if(!loginData.password){
       setError({password:"Password is Require"});
     }
     else{
-      signInWithEmailAndPassword(auth, userData.email , userData.password)
+      signInWithEmailAndPassword(auth, loginData.email , loginData.password)
       .then((userCredential) => {
+        if(userCredential.user.emailVerified){
           navigate("/home")
+          console.log(userCredential)
+       }else{
+          signOut(auth).then(() => {
+            setError({email:"Verify your email"});
+          });
+       }
       })
       .catch((error) => {
         const errorCode = error.code;
