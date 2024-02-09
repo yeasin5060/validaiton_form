@@ -10,8 +10,8 @@ import Pera from '../../Utilites/Pera/Pera';
 import { Link } from 'react-router-dom';
 import login from '../../images/login.png'
 import { getAuth, createUserWithEmailAndPassword ,sendEmailVerification ,updateProfile } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
 import { useNavigate } from "react-router-dom";
+import { getDatabase, ref, set } from "firebase/database";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -22,12 +22,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Login = () => {
-
+  const db = getDatabase();
   const auth = getAuth();
-  const db = getDatabase()
   const navigate = useNavigate();
 
-  let [userData , setUserData] = useState({
+  let [user , setUser] = useState({
     fullname : "",
     email : "",
     password : "",
@@ -36,7 +35,7 @@ const Login = () => {
 
   let handleform = (e)=>{
     let {name , value} = e.target
-    setUserData({...userData,[name]:value})
+    setUser({...user,[name]:value})
   }
 
   let [error , setError] = useState({
@@ -48,57 +47,58 @@ const Login = () => {
 
   let emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-  let signhandle = ()=>{
-    if(!userData.fullname){
+  let signhandle = (e)=>{
+    e.preventDefault()
+    if(!user.fullname){
         setError({fullname:"Full Name is Require"});
     }
-    else if (!userData.email){
+    else if (!user.email){
       setError({fullname:" "});
       setError({email:"Email is Require"});
     }
-    else if (!userData.email.match(emailregex)){
+    else if (!user.email.match(emailregex)){
       setError({email:" "});
       setError({email:"Inter valid Email"});
     }
-    else if (!userData.password){
+    else if (!user.password){
       setError({email:" "});
       setError({password:"Password is Require"});
     }
-    else if(!userData.conpassword){
+    else if(!user.conpassword){
       setError({password:""})
       setError({conpassword:"Confirm-Password is Require"})
     }
-    else if(userData.conpassword != userData.password){
+    else if(user.conpassword != user.password){
       setError({conpassword:"Confirm-Password Don't Match"})
     }
     else{
-      createUserWithEmailAndPassword(auth, userData.email, userData.password)
-        .then((userCredential)=> {
+      createUserWithEmailAndPassword(auth, user.email , user.password)
+        .then((userCredential) => {
           sendEmailVerification(auth.currentUser)
           .then(() => {
             updateProfile(auth.currentUser, {
-              displayName: userData.fullname,
-              photoURL: "https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg="
-            }).then(() => {
-              set(ref(db, 'logindata/' + userCredential.user.uid), {
-                username:userCredential.user.displayName,
-                email: userCredential.user.email,
-                profile_picture : userCredential.user.photoURL
+              displayName: user.fullname, 
+              photoURL: "https://example.com/jane-q-user/profile.jpg"
+              }).then(() => {
+                set(ref(db, 'usersdata/' + userCredential.user.uid), {
+                  username: userCredential.user.displayName,
+                  email:userCredential.user.email,
+                  profileImage :userCredential.user.photoURL
+                }).then(()=>{
+                  navigate("/sign")
+                  console.log(userCredential)
+                });
               });
-            }).then(()=>{
-              navigate ("/sign")
-              console.log(userCredential)
-            })
           });
-        })
-        .catch((error) => {
-          const errorCode = error.code;
+      }).catch((error) => {
+        const errorCode = error.code;
         if(errorCode == "auth/email-already-in-use"){
-          setError({email : "Email already Exist"})
-        }else{
-          setError({email : ""})
+          setError({email: " Email already exised"})
         }
-        });
+        else{
+          setError({email:""})
+        }
+      });
     }
   }
   return (
@@ -110,7 +110,7 @@ const Login = () => {
             <div className='log_in_page_wrapper'>
               <Subhead text="Get started with easily register" style="log_in_head"/>
               <Pera text="Free register and you can enjoy it" style="log_in_pera"/>
-                <div className='sign_in_wrapper'>
+                <form className='sign_in_wrapper'>
                   <div className='log_in_input_box'>
                     <TextField id="outlined-basic" type = "text" name = "fullname" label="Full Name" onChange={handleform} variant="outlined" />
                     {error.fullname && <p className='login_error'>{error.fullname}</p>}
@@ -127,7 +127,7 @@ const Login = () => {
                       <TextField id="outlined-basic" type='password' name='conpassword' label="Confirm-Password" onChange={handleform} variant="outlined" />
                       {error.conpassword && <p className='sign_error'>{error.conpassword}</p>}
                     </div>
-                </div>
+                </form>
                 <div className='log_in_page_button_box'>
                   <button onClick={signhandle} className='log_in_page_btn'>Sign up</button>
                 </div>

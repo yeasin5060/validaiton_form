@@ -10,9 +10,8 @@ import Pera from '../../Utilites/Pera/Pera';
 import { Link } from 'react-router-dom';
 import sign from "../../images/sign.png"
 import google from '../../images/google.svg'
-import { getAuth, signInWithEmailAndPassword , signOut} from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
-
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -25,7 +24,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const Signin = () => {
   const auth = getAuth();
   const navigate = useNavigate();
-
+  
   let [loginData , setLoginData] = useState({
     email : "",
     password : ""
@@ -41,7 +40,8 @@ const Signin = () => {
     password : ""
   })
   let emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  let login = ()=>{
+  let login = (e)=>{
+    e.preventDefault()
     if(!loginData.email){
       setError({email:"Email is Require"});
     }
@@ -52,24 +52,21 @@ const Signin = () => {
       setError({password:"Password is Require"});
     }
     else{
-      signInWithEmailAndPassword(auth, loginData.email , loginData.password)
+      signInWithEmailAndPassword(auth, loginData.email, loginData.password)
       .then((userCredential) => {
         if(userCredential.user.emailVerified){
           navigate("/home")
-          console.log(userCredential)
        }else{
           signOut(auth).then(() => {
             setError({email:"Verify your email"});
           });
        }
-      })
-      .catch((error) => {
+      }).catch((error) => {
         const errorCode = error.code;
         if(errorCode == "auth/invalid-credential"){
-          setError({email:"Register your email"})
-        }
-        else{
-          setError({email: ""})
+          setError({email:"Signin your email"});
+        }else{
+          setError({email:""})
         }
       });
     }
@@ -88,7 +85,7 @@ const Signin = () => {
                       <span className='sign_page_google'>Login with Google</span>
                     </Link>
                 </div>
-                  <div className='sign_in_wrapper'>
+                  <form className='sign_in_wrapper'>
                     <div className='sign_in_input_box'>
                       <TextField id="outlined-basic" type='email' name='email' label="Email" onChange={handleform} variant="outlined" />
                       {error.email && <p className='sign_error'>{error.email}</p>}
@@ -97,7 +94,7 @@ const Signin = () => {
                       <TextField id="outlined-basic" type='password' name='password' label="Password" onChange={handleform} variant="outlined" />
                       {error.password && <p className='sign_error'>{error.password}</p>}
                     </div>
-                  </div>
+                  </form>
                   <div className='sign_page_button_box'>
                     <button onClick = {login} className='sign_page_btn'>Login to Continue</button>
                   </div>
