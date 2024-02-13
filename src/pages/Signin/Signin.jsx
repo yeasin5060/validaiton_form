@@ -13,7 +13,7 @@ import google from '../../images/google.svg'
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Oval } from 'react-loader-spinner';
-
+import { useSelector, useDispatch } from 'react-redux'
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -25,6 +25,7 @@ const Item = styled(Paper)(({ theme }) => ({
 const Signin = () => {
   const auth = getAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   
   let [loginData , setLoginData] = useState({
     email : "",
@@ -57,6 +58,8 @@ const Signin = () => {
       signInWithEmailAndPassword(auth, loginData.email, loginData.password)
       .then((userCredential) => {
         if(userCredential.user.emailVerified){
+          localStorage.setItem(userCredential.user)
+          dispatch(userCredential.user)
           navigate("/home")
        }else{
           signOut(auth).then(() => {
