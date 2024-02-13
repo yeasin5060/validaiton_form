@@ -7,8 +7,40 @@ a{
     text-decoration: none;
 }
 ol,ul{
-    line-height: none;
+    list-style: none;
 }
 h1 h2 h3 h4 h5 h6 p{
     line-height: 0.8px;
+}
+.container{
+    width: 1480px;
+    margin: 0 auto;
+}
+body{
+    background: #000;
+    position: relative;
+}
+body::after{
+    position: absolute;
+    content: "";
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background:#7c66e3;
+    left: 100px;
+    top: 50px;
+    z-index: 11;
+    filter: blur(300px);
+}
+body::before{
+    position: absolute;
+    content: "";
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background:#7c66e3;
+    bottom:-700px;
+    right: 100px;
+    filter: blur(300px);
+    z-index: 15;
 }
