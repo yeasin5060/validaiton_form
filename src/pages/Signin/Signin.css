@@ -53,19 +53,26 @@
 }
 .sign_page_button_box{
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 400px;
     margin: 40px 0;
+    background: #5F35F5;
+    border-radius: 20px;
 }
 .sign_page_btn{
     width: 100%;
-    border-radius: 20px;
     padding: 20px 0;
-    background: #5F35F5;
     cursor: pointer;
     font-size: 20px;
     font-weight: 600;
     color: #fff;
     border: none;
+    background: transparent;
+}
+.oval{
+    padding: 20px 0;
 }
 .sing_page_to_login_link_box{
     text-align: center;

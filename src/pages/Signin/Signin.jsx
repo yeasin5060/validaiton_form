@@ -12,6 +12,7 @@ import sign from "../../images/sign.png"
 import google from '../../images/google.svg'
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { Oval } from 'react-loader-spinner';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -42,6 +43,7 @@ const Signin = () => {
   let emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   let login = (e)=>{
     e.preventDefault()
+    setReactloder(true)
     if(!loginData.email){
       setError({email:"Email is Require"});
     }
@@ -65,12 +67,14 @@ const Signin = () => {
         const errorCode = error.code;
         if(errorCode == "auth/invalid-credential"){
           setError({email:"Signin your email"});
+          setReactloder(false)
         }else{
           setError({email:""})
         }
       });
     }
   }
+  let [reactloder , setReactloder] = useState(false)
   return (
     <section id='sgin_in'>
       <Box sx={{ flexGrow: 1 }}>
@@ -96,7 +100,21 @@ const Signin = () => {
                     </div>
                   </form>
                   <div className='sign_page_button_box'>
-                    <button onClick = {login} className='sign_page_btn'>Login to Continue</button>
+                    {
+                      reactloder 
+                      ?
+                      (<Oval
+                        visible={true}
+                        height="30"
+                        width="30"
+                        color="#fff"
+                        ariaLabel="oval-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="oval"
+                        />)
+                      :
+                      <button onClick = {login} className='sign_page_btn'>Login to Continue</button>
+                    }
                   </div>
                   <div className='sing_page_to_login_link_box'>
                     <span className='sign_page_already_account'>

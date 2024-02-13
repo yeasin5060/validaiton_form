@@ -12,6 +12,7 @@ import login from '../../images/login.png'
 import { getAuth, createUserWithEmailAndPassword ,sendEmailVerification ,updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, set } from "firebase/database";
+import { Oval } from 'react-loader-spinner';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -48,6 +49,7 @@ const Login = () => {
   let emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
   let signhandle = (e)=>{
+    setReactloder(true)
     e.preventDefault()
     if(!user.fullname){
         setError({fullname:"Full Name is Require"});
@@ -94,6 +96,7 @@ const Login = () => {
         const errorCode = error.code;
         if(errorCode == "auth/email-already-in-use"){
           setError({email: " Email already exised"})
+          setReactloder(false)
         }
         else{
           setError({email:""})
@@ -101,6 +104,7 @@ const Login = () => {
       });
     }
   }
+  let [reactloder , setReactloder] = useState(false)
   return (
     <section id='log_in'>
     <Box sx={{ flexGrow: 1 }}>
@@ -129,7 +133,20 @@ const Login = () => {
                     </div>
                 </form>
                 <div className='log_in_page_button_box'>
-                  <button onClick={signhandle} className='log_in_page_btn'>Sign up</button>
+                  { reactloder
+                      ?
+                      (<Oval
+                        visible={true}
+                        height="30"
+                        width="30"
+                        color="#fff"
+                        ariaLabel="oval-loading"
+                        wrapperStyle={{}}
+                        wrapperClass="oval"
+                      />)
+                      :
+                      <button onClick={signhandle} className='log_in_page_btn'>Sign up</button>
+                  }
                 </div>
                 <div className='log_in_page_to_sign_link_box'>
                   <span className='log_in_page_already_account'>
