@@ -12,6 +12,18 @@
     align-items: center;
     justify-content: space-between;
 }
+.navbar_wrapper_profile_name_and_profile_image_box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.navbar_wrapper_profile_name{
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+}
 .navbar_wrapper_logo_box{
     width: 100px;
     height: 100px;

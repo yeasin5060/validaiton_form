@@ -14,6 +14,10 @@ import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Oval } from 'react-loader-spinner';
 import { useSelector, useDispatch } from 'react-redux'
+import { loginuserdata } from '../../slice/userslice';
+loginuserdata
+
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -26,7 +30,8 @@ const Signin = () => {
   const auth = getAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch()
-  
+  let [reactloder , setReactloder] = useState(false)
+
   let [loginData , setLoginData] = useState({
     email : "",
     password : ""
@@ -44,7 +49,6 @@ const Signin = () => {
   let emailregex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   let login = (e)=>{
     e.preventDefault()
-    setReactloder(true)
     if(!loginData.email){
       setError({email:"Email is Require"});
     }
@@ -55,29 +59,29 @@ const Signin = () => {
       setError({password:"Password is Require"});
     }
     else{
+      setReactloder(true)
       signInWithEmailAndPassword(auth, loginData.email, loginData.password)
       .then((userCredential) => {
         if(userCredential.user.emailVerified){
-          localStorage.setItem(userCredential.user)
-          dispatch(userCredential.user)
+          localStorage.setItem("user",JSON.stringify(userCredential.user))
+          dispatch(loginuserdata(userCredential.user))
           navigate("/home")
        }else{
           signOut(auth).then(() => {
             setError({email:"Verify your email"});
+            setReactloder(false)
           });
        }
       }).catch((error) => {
         const errorCode = error.code;
         if(errorCode == "auth/invalid-credential"){
           setError({email:"Signin your email"});
-          setReactloder(false)
         }else{
           setError({email:""})
         }
       });
     }
   }
-  let [reactloder , setReactloder] = useState(false)
   return (
     <section id='sgin_in'>
       <Box sx={{ flexGrow: 1 }}>
@@ -103,7 +107,7 @@ const Signin = () => {
                     </div>
                   </form>
                   <div className='sign_page_button_box'>
-                    {
+                  {
                       reactloder 
                       ?
                       (<Oval
