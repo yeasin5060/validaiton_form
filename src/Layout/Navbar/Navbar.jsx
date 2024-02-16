@@ -40,13 +40,13 @@ const Navbar = () => {
                 <NavLink className="page_link" to = "home"><GoHome /></NavLink>
               </li>
               <li>
-                <NavLink className="page_link" to = "about"><AiTwotoneMessage /></NavLink>
+                <NavLink className="page_link" to = "message"><AiTwotoneMessage /></NavLink>
               </li>
               <li>
-                <NavLink className="page_link" to = "service"><IoMdNotificationsOutline /></NavLink>
+                <NavLink className="page_link" to = "notivication"><IoMdNotificationsOutline /></NavLink>
               </li>
               <li>
-                <NavLink className="page_link" to = "faq"><IoSettingsOutline /></NavLink>
+                <NavLink className="page_link" to = "setting"><IoSettingsOutline /></NavLink>
               </li>
             </ul>
             <div className='logout_btn_box'>
