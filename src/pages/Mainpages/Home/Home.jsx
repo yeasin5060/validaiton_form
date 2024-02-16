@@ -6,6 +6,7 @@ import Homefriend from './Homesection/Homefriend/Homefriend'
 import Homegrouplist from './Homesection/Homegrouplist/Homegrouplist'
 import Homefriendrequest from './Homesection/Homefriendrequest/Homefriendrequest'
 import Homemygroups from './Homesection/Homemygroups/Homemygroups'
+import Homeblockeduser from './Homesection/Homeblockeduser/Homeblockeduser'
 
 const Home = () => {
   return (
@@ -19,6 +20,7 @@ const Home = () => {
               <Homegrouplist/>
               <Homefriendrequest/>
               <Homemygroups/>
+              <Homeblockeduser/>
             </div>
           </div>
         </div>
