@@ -1,10 +1,18 @@
 import React from 'react'
 import './Home.css'
+import Homesearch from './Homesection/Homesearch/Homesearch'
 
 const Home = () => {
   return (
    <section id ="home_page">
-        <h1>home</h1>
+        <div className='container'>
+          <div className='home_page_wrapper'>
+            <Homesearch/>
+            <div className='home_page_flex'>
+              
+            </div>
+          </div>
+        </div>
    </section>
   )
 }

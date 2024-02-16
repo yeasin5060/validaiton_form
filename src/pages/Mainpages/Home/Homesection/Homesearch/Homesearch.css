@@ -1,0 +1,21 @@
+#home_search{
+    padding: 230px 0 50px 0;
+    background: transparent;
+}
+.home_search_input_box{
+    text-align: left;
+    width: 800px;
+}
+.home_search_input{
+    width: 100%;
+    padding: 15px 30px;
+    outline: none;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    background: transparent;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    position: relative;
+    z-index: 20;
+}

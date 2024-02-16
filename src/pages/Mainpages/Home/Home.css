@@ -13,7 +13,7 @@
     background:#7c66e3;
     left: 100px;
     top: 50px;
-    filter: blur(300px);
+    filter: blur(330px);
 }
 #home_page::before{
     position: absolute;
@@ -24,5 +24,5 @@
     background:#7c66e3;
     bottom:-200px;
     right: 100px;
-    filter: blur(300px);
+    filter: blur(330px);
 }
