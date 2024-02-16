@@ -3,6 +3,7 @@ import './Home.css'
 import Homesearch from './Homesection/Homesearch/Homesearch'
 import Homeuserlist from './Homesection/Homeuserlist/Homeuserlist'
 import Homefriend from './Homesection/Homefriend/Homefriend'
+import Homegrouplist from './Homesection/Homegrouplist/Homegrouplist'
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
             <div className='home_page_flex'>
               <Homeuserlist/>
               <Homefriend/>
+              <Homegrouplist/>
             </div>
           </div>
         </div>
