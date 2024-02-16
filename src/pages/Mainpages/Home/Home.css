@@ -26,3 +26,9 @@
     right: 100px;
     filter: blur(330px);
 }
+.home_page_flex{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    column-gap: 40px;
+}
