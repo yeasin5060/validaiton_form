@@ -2,7 +2,7 @@
     background: #000;
     position: relative;
     width: 100%;
-    height:100vh;
+    height:1000px;
 }
 #home_page::after{
     position: absolute;
