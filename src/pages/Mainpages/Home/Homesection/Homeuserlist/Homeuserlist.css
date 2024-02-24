@@ -63,28 +63,26 @@
     line-height: normal;
 }
 .homeuserlist_profile_add_btn{
-    padding: 10px;
-    border-radius: 10px;
-    background: #5F35F5;
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
-    cursor: pointer;
-    transition: all linear 0.3s;
-}
-.homeuserlist_profile_add_btn:hover{
-    transform: translateY(-4px);
+    column-gap: 10px;
+
 }
 .homeuserlist_profile_btn{
     border: none;
-    background: transparent;
     cursor: pointer;
-}
-.homeuserlist_profile_add{
     font-size: 18px;
     color: #fff;
     cursor: pointer;
     background: transparent;
+    padding: 10px;
+    border-radius: 10px;
+    background: #5F35F5;
+    transition: all linear 0.3s;
+}
+.homeuserlist_profile_btn:hover{
+    transform: translateY(-4px);
 }
 .homeuserlist_profile_online{
     color:#fff;
