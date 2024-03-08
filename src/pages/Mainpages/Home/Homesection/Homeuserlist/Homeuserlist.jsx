@@ -23,7 +23,24 @@ const Homeuserlist = () => {
         });
     },[])
     console.log(data);
-    console.log(userList);
+
+                //send friend request
+    let friendRequest = (friendRequestInfo)=>{
+        set(ref(db , "friendrequest/" + friendRequestInfo.id),{
+                //sender data
+            sendername : data.displayName,
+            senderid : data.uid,
+            senderimg : data.photoURL,
+            senderemail : data.email,
+                //receiver data
+            receivername : friendRequestInfo.username,
+            receiverid : friendRequestInfo.id,
+            receiverimg : friendRequestInfo.profileImage,
+            receiveremail : friendRequestInfo.email
+        })
+        alert("Friend Request Succesful")
+        console.log(friendRequestInfo)
+    }
     
   return (
    <section id='homeuserlist'>
@@ -44,7 +61,7 @@ const Homeuserlist = () => {
                                     </div>
                                 </div>
                                 <div className='homeuserlist_profile_add_btn'>
-                                        <button className='homeuserlist_profile_btn'>
+                                        <button onClick={()=> friendRequest (item)} className='homeuserlist_profile_btn'>
                                             add
                                         </button>
                                 </div>
