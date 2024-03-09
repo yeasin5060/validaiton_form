@@ -22,6 +22,30 @@ const Homefriendrequest = () => {
         });
     },[])
     console.log(request)
+                //request delete
+    let requestdelete =(deleteinfo)=>{
+        remove(ref(db , "friendrequest/" + deleteinfo.id))
+        alert("delete done")
+    }
+                //request accept and creat a new data base name friendlist
+    let requestAccept = (requestAcceptinfo)=>{
+        set(push(ref(db , "friendlist")),{
+                //who sender request
+            whosenderid : requestAcceptinfo.senderid,
+            whosendername : requestAcceptinfo.sendername,
+            whosenderimg : requestAcceptinfo.senderimg,
+            whosenderemail : requestAcceptinfo.senderemail,
+                //who receive request
+            whoreceivid : data.uid,
+            whoreceivname :data.displayName,
+            whoreceivemail : data.email,
+            whoreceivimg :data.photoURL,
+        }).then (()=>{
+            remove(ref(db, 'friendrequest/' + requestAcceptinfo.id))
+        })
+        alert("Accept Succesful")
+        console.log(requestAcceptinfo)
+    }
   return (
     <section id='homefriendrequest'>
         <div className='homefriendrequest_wrapper'>
@@ -42,10 +66,10 @@ const Homefriendrequest = () => {
                                     </div>
                                 </div>
                                 <div className='homefriendrequest_profile_add_btn'>
-                                        <button className='homefriendrequest_profile_btn'>
+                                        <button onClick={()=> requestdelete(item)} className='homefriendrequest_profile_btn'>
                                             Delete
                                         </button>
-                                        <button className='homefriendrequest_profile_btn'>
+                                        <button onClick={()=> requestAccept(item)} className='homefriendrequest_profile_btn'>
                                             Accept
                                         </button>
                                 </div>
