@@ -92,3 +92,9 @@
     line-height: normal;
     margin-top: 2px;
 }
+.pendin_and_cancel_flex{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    column-gap: 10px;
+}

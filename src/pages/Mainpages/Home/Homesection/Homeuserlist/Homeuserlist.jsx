@@ -7,8 +7,9 @@ import { useSelector, useDispatch } from 'react-redux'
 const Homeuserlist = () => {
     const db = getDatabase();
     const data = useSelector((state) => state.alldata.value)
-
     let [userList , setUserList] = useState([])
+    const [request , setRequest] = useState([])
+    const [requestPrending , setRequestPrending] = useState([]) 
 
     useEffect (()=>{
         const userListRef = ref(db, 'usersdata');
@@ -41,7 +42,26 @@ const Homeuserlist = () => {
         alert("Friend Request Succesful")
         console.log(friendRequestInfo)
     }
-    
+
+    useEffect (()=>{
+        const requestListRef = ref(db, 'friendrequest');
+            onValue(requestListRef, (snapshot) => {
+                let array = []
+                let requestarray = []
+                snapshot.forEach((item)=>{
+                   if(item.val().receiverid == data.uid){
+                        requestarray.push(item.val().senderid + item.val().receiverid)
+                   }
+                   if(data.uid == item.val().senderid){
+                    array.push(item.val().receiverid + item.val().senderid)
+                   }
+                })
+                setRequest(array)
+                setRequestPrending(requestarray)
+        });
+    },[])
+    console.log(request)
+    console.log(requestPrending);
   return (
    <section id='homeuserlist'>
         <div className='homeuserlist_wrapper'>
@@ -61,9 +81,23 @@ const Homeuserlist = () => {
                                     </div>
                                 </div>
                                 <div className='homeuserlist_profile_add_btn'>
+                                    {
+                                        request &&
+                                        request.includes(item.id + data.uid) || request.includes(data.uid + item.id)
+                                        ?
+                                        <div className='pendin_and_cancel_flex'>
+                                            <button className='homeuserlist_profile_btn'>
+                                                pendin
+                                            </button>
+                                            <button  className='homeuserlist_profile_btn'>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                        :
                                         <button onClick={()=> friendRequest (item)} className='homeuserlist_profile_btn'>
-                                            add
-                                        </button>
+                                        add
+                                        </button>    
+                                    }
                                 </div>
                             </div>
                         ))
