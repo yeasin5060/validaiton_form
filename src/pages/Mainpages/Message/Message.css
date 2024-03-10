@@ -1,7 +1,31 @@
 #message_full_body{
     background: #000;
+    position: relative;
     width: 100%;
     height: 100vh;
+    padding-bottom: 50px;
+}
+#message_full_body::after{
+    position: absolute;
+    content: "";
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background:#7c66e3;
+    left: 100px;
+    top: 50px;
+    filter: blur(330px);
+}
+#message_full_body::before{
+    position: absolute;
+    content: "";
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background:#7c66e3;
+    bottom:-200px;
+    right: 100px;
+    filter: blur(330px);
 }
 .message_child_flex{
     display: flex;

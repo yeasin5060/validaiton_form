@@ -1,24 +1,56 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Homefriend.css'
 import Grouphead from '../../../../../Component/Groupshead/Grouphead'
+import { getDatabase, ref, onValue , set , push ,remove } from "firebase/database";
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from 'react';
+
 
 const Homefriend = () => {
+    const db = getDatabase();
+    const data = useSelector((state) => state.alldata.value)
+    let [friend , setFriend] = useState([])
+
+    useEffect(()=>{
+        const friendListRef = ref(db, 'friendlist');
+            onValue(friendListRef, (snapshot) => {
+                let array = []
+                snapshot.forEach((item)=>{
+                   if(data.uid == item.val(). whoreceivid || data.uid == item.val().whosenderid ){
+                        array.push({...item.val(),id:item.key})
+                   }
+                })
+                setFriend(array)
+        });
+    },[])
+    console.log(friend);
   return (
     <section id='homefriend'>
         <div className='homefriend_wrapper'>
             <div className='homefriend_user_box'>
                 <Grouphead grouphead="Friend"/>
                 <div className='homefriend_wrapper_box_flex'>
-                    {
-                        [ 1 , 2 , 3 , 4 ,5 , 6 , 7 , 8 ].map((item , index)=>(
+                    {   friend &&
+                        friend.map((item , index)=>(
                             <div key={index} className='homefriend_profile_wrapper'>
                                 <div className='homefriend_profile_box'>
                                     <div className='homefriend_list_profile_image'>
-                                        <img src="" alt="" />
+                                        <img src={data.uid == item.whorsenderid ? item.whoreceivimg : item.whosenderimg} alt="not found" />
                                     </div>
                                     <div className='homefriend_profile_name'>
-                                        <h4 className='homefriend_profile_friend_name'>Raghav</h4>
-                                        <h5 className='homefriend_profile_online'>Hosen</h5>
+                                        {
+                                            data.uid == item.whosenderid
+                                            ?
+                                            <div>
+                                                <h4 className='homefriend_profile_friend_name'>{item.whoreceivname}</h4>
+                                                <h5 className='homefriend_profile_online'>Hosen</h5>
+                                            </div>
+                                            :
+                                            <div>
+                                                <h4 className='homefriend_profile_friend_name'>{item.whosendername}</h4>
+                                                <h5 className='homefriend_profile_online'>Hosen</h5>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                                 <div className='homefriend_profile_add_btn'>
