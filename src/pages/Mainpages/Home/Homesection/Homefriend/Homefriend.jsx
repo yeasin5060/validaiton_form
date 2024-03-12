@@ -23,6 +23,25 @@ const Homefriend = () => {
                 setFriend(array)
         });
     },[])
+
+                // create new database name blockedusers
+    let handelblockusers = (blockinfo)=>{
+        set(push(ref(db, 'blockedusers')), {
+            whereofblockid : blockinfo.whosenderid,
+            whereofblockname : blockinfo.whosendername,
+            whereofblockemail :blockinfo.whosenderemail,
+            whereofblockimg : blockinfo.whosenderimg,
+            whoreceivid : data.uid,
+            whoreceivname :data.displayName,
+            whoreceivemail : data.email,
+            whoreceivimg :data.photoURL,
+
+        }).then (()=>{
+            remove(ref(db, 'friendlist/' + blockinfo.id))
+        })
+        alert("Block Succesful")
+    }
+
   return (
     <section id='homefriend'>
         <div className='homefriend_wrapper'>
@@ -53,7 +72,7 @@ const Homefriend = () => {
                                     </div>
                                 </div>
                                 <div className='homefriend_profile_add_btn'>
-                                        <button className='homefriend_profile_btn'>
+                                        <button onClick={()=> handelblockusers(item)} className='homefriend_profile_btn'>
                                            Block
                                         </button>
                                 </div>
