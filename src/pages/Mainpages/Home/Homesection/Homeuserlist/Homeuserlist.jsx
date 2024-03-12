@@ -9,8 +9,9 @@ const Homeuserlist = () => {
     const data = useSelector((state) => state.alldata.value)
     let [userList , setUserList] = useState([])
     const [request , setRequest] = useState([])
-    const [requestPrending , setRequestPrending] = useState([]) 
-
+    const [requestPrending , setRequestPrending] = useState([])
+    let [friend , setFriend] = useState([]) 
+                //read all user data
     useEffect (()=>{
         const userListRef = ref(db, 'usersdata');
             onValue(userListRef, (snapshot) => {
@@ -23,7 +24,6 @@ const Homeuserlist = () => {
                 setUserList(array)
         });
     },[])
-    console.log(data);
 
                 //send friend request
     let friendRequest = (friendRequestInfo)=>{
@@ -43,6 +43,12 @@ const Homeuserlist = () => {
         console.log(friendRequestInfo)
     }
 
+                    // cancel request
+    let requestcancel = (cancelrequest)=>{
+        remove(ref(db , "friendrequest/" + cancelrequest.id))
+        alert("Cancel Request Succesful")
+    }
+                // read friendrequest data and togol button pendin cancel request 
     useEffect (()=>{
         const requestListRef = ref(db, 'friendrequest');
             onValue(requestListRef, (snapshot) => {
@@ -60,8 +66,19 @@ const Homeuserlist = () => {
                 setRequestPrending(requestarray)
         });
     },[])
-    console.log(request)
-    console.log(requestPrending);
+                // read friendlist data and togol button friend requet add
+    useEffect(()=>{
+        const friendListRef = ref(db, 'friendlist');
+            onValue(friendListRef, (snapshot) => {
+                let array = []
+                snapshot.forEach((item)=>{
+                   if(data.uid == item.val(). whoreceivid || data.uid == item.val().whosenderid ){
+                        array.push(item.val().whoreceivid + item.val().whosenderid)
+                   }
+                })
+                setFriend(array)
+        });
+    },[])
   return (
    <section id='homeuserlist'>
         <div className='homeuserlist_wrapper'>
@@ -89,10 +106,22 @@ const Homeuserlist = () => {
                                             <button className='homeuserlist_profile_btn'>
                                                 pendin
                                             </button>
-                                            <button  className='homeuserlist_profile_btn'>
+                                            <button onClick={()=> requestcancel(item)}  className='homeuserlist_profile_btn'>
                                                 Cancel
                                             </button>
                                         </div>
+                                        :
+                                        friend.includes(item.id + data.uid) || friend.includes(data.uid + item.id)
+                                        ?
+                                        <button className='homeuserlist_profile_btn'>
+                                        Friend
+                                        </button> 
+                                        :
+                                        requestPrending.includes(item.id + data.uid)
+                                        ?
+                                        <button className='homeuserlist_profile_btn'>
+                                        Requst
+                                        </button> 
                                         :
                                         <button onClick={()=> friendRequest (item)} className='homeuserlist_profile_btn'>
                                         add

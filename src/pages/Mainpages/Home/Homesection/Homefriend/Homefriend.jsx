@@ -23,7 +23,6 @@ const Homefriend = () => {
                 setFriend(array)
         });
     },[])
-    console.log(friend);
   return (
     <section id='homefriend'>
         <div className='homefriend_wrapper'>

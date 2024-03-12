@@ -21,7 +21,6 @@ const Homefriendrequest = () => {
                 setRequest(array)
         });
     },[])
-    console.log(request)
                 //request delete
     let requestdelete =(deleteinfo)=>{
         remove(ref(db , "friendrequest/" + deleteinfo.id))
